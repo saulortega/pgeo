@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+//Circles are represented by a center point and radius.
 type Circle struct {
 	Point
 	Radius float64 `json:"radius"`
