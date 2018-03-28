@@ -6,6 +6,7 @@ import (
 	"fmt"
 )
 
+//Boxes are represented by pairs of points that are opposite corners of the box.
 type Box [2]Point
 
 func (b Box) Value() (driver.Value, error) {
