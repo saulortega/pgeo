@@ -7,7 +7,7 @@ import (
 	"regexp"
 )
 
-//Line represents a infinite line with the linear equation Ax + By + C = 0, where A and B are not both zero.
+// Line represents a infinite line with the linear equation Ax + By + C = 0, where A and B are not both zero.
 type Line struct {
 	A float64 `json:"a"`
 	B float64 `json:"b"`

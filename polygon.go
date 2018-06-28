@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-//Polygons are represented by lists of points (the vertexes of the polygon).
+// Polygons are represented by lists of points (the vertexes of the polygon).
 type Polygon []Point
 
 func (p Polygon) Value() (driver.Value, error) {

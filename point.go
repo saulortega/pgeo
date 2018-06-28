@@ -4,8 +4,8 @@ import (
 	"database/sql/driver"
 )
 
-//Points are the fundamental two-dimensional building block for geometric types.
-//X and Y are the respective coordinates, as floating-point numbers
+// Points are the fundamental two-dimensional building block for geometric types.
+// X and Y are the respective coordinates, as floating-point numbers
 type Point struct {
 	X float64 `json:"x"`
 	Y float64 `json:"y"`

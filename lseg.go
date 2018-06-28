@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-//Line segments are represented by pairs of points that are the endpoints of the segment.
+// Line segments are represented by pairs of points that are the endpoints of the segment.
 type Lseg [2]Point
 
 func (l Lseg) Value() (driver.Value, error) {
