@@ -2,11 +2,12 @@ package pgeo
 
 import (
 	"database/sql/driver"
+	"encoding/json"
 )
 
 type NullLine struct {
 	Line
-	Valid bool `json:"valid"`
+	Valid bool
 }
 
 func (l NullLine) Value() (driver.Value, error) {
@@ -25,4 +26,23 @@ func (l *NullLine) Scan(src interface{}) error {
 
 	l.Valid = true
 	return scanLine(&l.Line, src)
+}
+
+func (l *NullLine) MarshalJSON() ([]byte, error) {
+	if !l.Valid {
+		return []byte("null"), nil
+	}
+
+	return json.Marshal(l.Line)
+}
+
+func (l *NullLine) UnmarshalJSON(data []byte) error {
+	if string(data) == "" || string(data) == "null" {
+		l.Valid = false
+		return nil
+	}
+
+	var err = json.Unmarshal(data, l.Line)
+	l.Valid = err == nil
+	return err
 }

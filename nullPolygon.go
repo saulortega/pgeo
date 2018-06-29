@@ -2,11 +2,12 @@ package pgeo
 
 import (
 	"database/sql/driver"
+	"encoding/json"
 )
 
 type NullPolygon struct {
 	Polygon
-	Valid bool `json:"valid"`
+	Valid bool
 }
 
 func (p NullPolygon) Value() (driver.Value, error) {
@@ -25,4 +26,23 @@ func (p *NullPolygon) Scan(src interface{}) error {
 
 	p.Valid = true
 	return scanPolygon(&p.Polygon, src)
+}
+
+func (p *NullPolygon) MarshalJSON() ([]byte, error) {
+	if !p.Valid {
+		return []byte("null"), nil
+	}
+
+	return json.Marshal(p.Polygon)
+}
+
+func (p *NullPolygon) UnmarshalJSON(data []byte) error {
+	if string(data) == "" || string(data) == "null" {
+		p.Valid = false
+		return nil
+	}
+
+	var err = json.Unmarshal(data, p.Polygon)
+	p.Valid = err == nil
+	return err
 }

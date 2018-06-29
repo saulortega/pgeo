@@ -2,6 +2,7 @@ package pgeo
 
 import (
 	"database/sql/driver"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"regexp"
@@ -12,7 +13,7 @@ import (
 // or closed, where the first and last points are considered connected.
 type Path struct {
 	Points []Point
-	Closed bool `json:"closed"`
+	Closed bool
 }
 
 func (p Path) Value() (driver.Value, error) {
@@ -55,4 +56,17 @@ func scanPath(p *Path, src interface{}) error {
 	(*p).Closed = regexp.MustCompile(`^\(\(`).MatchString(val)
 
 	return nil
+}
+
+func (p *Path) MarshalJSON() ([]byte, error) {
+	return json.Marshal(p.Points)
+}
+
+func (p *Path) UnmarshalJSON(data []byte) error {
+	var err = json.Unmarshal(data, p.Points)
+	if p.Points != nil && len(p.Points) > 1 {
+		p.Closed = p.Points[0] == p.Points[len(p.Points)-1]
+	}
+
+	return err
 }
