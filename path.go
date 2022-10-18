@@ -8,6 +8,8 @@ import (
 	"regexp"
 )
 
+var closedPathRegexp = regexp.MustCompile(`^\(\(`)
+
 // Path is represented by list of connected points.
 // Paths can be open, where the first and last points in the list are considered not connected,
 // or closed, where the first and last points are considered connected.
@@ -49,11 +51,11 @@ func scanPath(p *Path, src interface{}) error {
 		return err
 	}
 
-	if len((*p).Points) < 2 {
+	if len((*p).Points) < 1 {
 		return errors.New("wrong path")
 	}
 
-	(*p).Closed = regexp.MustCompile(`^\(\(`).MatchString(val)
+	(*p).Closed = closedPathRegexp.MatchString(val)
 
 	return nil
 }
